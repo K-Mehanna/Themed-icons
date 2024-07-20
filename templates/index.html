@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Themed icon generator
+{% endblock %}
+
+{% block main %}
+    <h1 class="text-center text-5xl font-bold mb-2">Create a themed icon</h1><br>
+
+    <form action="{{ url_for("create_icon")}}" method="post" enctype="multipart/form-data" class="text-xl">
+      <label for="file_input">Select files:</label>
+      <input type="file" id="file_input" name="file_input" multiple><br><br>
+
+      <label for="fg_colour">Select foreground color:</label>
+      <input type="color" id="fg_colour" name="fg_colour" value="#ffffff" class="h-5 w-10 rounded-md border-2 border-white"><br><br>
+
+      <label for="bg_colour">Select background color:</label>
+      <input type="color" id="bg_colour" name="bg_colour" value="#ffffff" class="h-5 w-10 rounded-md border-2 border-white"><br><br>
+
+      <p>Type of icon:</p>
+      <div class="flex justify-center space-x-5 mb-8">
+        <div class="flex items-center">
+          <input type="radio" id="bg_only" name="icon_type" value="bg_only" checked class="mr-2">
+          <label for="bg_only">Background only</label>
+        </div>
+        <div class="flex items-center">
+          <input type="radio" id="bg_fg" name="icon_type" value="bg_fg" class="mr-2">
+          <label for="bg_fg">Foreground and background</label>
+        </div>
+      </div>
+      
+        
+
+      <input type="submit" value="Submit" class="bg-green-800 px-4 py-2 rounded-lg border-2 border-white">
+    </form>
+
+{% endblock %}
