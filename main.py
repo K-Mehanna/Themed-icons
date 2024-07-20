@@ -39,6 +39,17 @@ def index():
 
 @app.route("/create-icon", methods=["POST"])
 def create_icon():
+    (filename, bg_colour, fg_colour, icon_type) = get_icon_and_form_data()
+    print(f'filename: {filename}, fg_colour: {fg_colour}, bg_colour: {bg_colour}, icon_type: {icon_type}')
+
+    # Call function to create icon
+    # themed_icon_filename = create_icon_from_image(filename, bg_colour, fg_colour, icon_type)
+    themed_icon_filename = filename
+    folder_path = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    return send_from_directory(folder_path, themed_icon_filename, as_attachment=True)
+
+
+def get_icon_and_form_data():
     icon = request.files["file_input"]
     if icon.filename == '':
         flash('Must provide file', 'error')
@@ -50,15 +61,12 @@ def create_icon():
         return redirect(url_for("index"))
   
     filename = secure_filename(icon.filename)
-    print(f'filename: {filename}')
     icon.save(os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'], filename))
 
     bg_colour = request.form['bg_colour']
     fg_colour = request.form['fg_colour']
     icon_type = request.form['icon_type']
-    print(f'fg_colour: {fg_colour}, bg_colour: {bg_colour}, icon_type: {icon_type}')
-
-    return redirect(url_for("index"))
+    return (filename, bg_colour, fg_colour, icon_type)
 
 def allowed_file(filename):
     allowedExtensions = {'png', 'jpg', 'jpeg'}
