@@ -47,7 +47,7 @@ def create_icon():
 
     folder_path = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     (soft_edges_mask, harsh_edges_mask) = detect_edges(folder_path, filename)
-    themed_icon_filename = theme_icon(folder_path, filename, bg_colour, fg_colour, icon_type, soft_edges_mask, harsh_edges_mask)
+    themed_icon_filename = theme_icon(folder_path, filename, bg_colour, fg_colour, icon_type, soft_edges_mask) # Make mask type conditional
 
     return send_from_directory(folder_path, themed_icon_filename, as_attachment=True)
 

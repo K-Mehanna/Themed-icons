@@ -71,7 +71,7 @@ def create_mask(path, filename):
     blurred = cv2.GaussianBlur(clipped.astype(np.float32), (3, 3), 0)
     
     # display_images(img_array, edges_binary, blurred, clipped)
-    return (img_array, blurred) #clipped
+    return (blurred, clipped)
 
 def white_background_colour(array):
     # Extract the top, bottom, left, and right strips of the image, 5 pixels in
