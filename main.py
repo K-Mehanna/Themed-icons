@@ -10,6 +10,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from edge_detection import detect_edges
+from theme_icon import theme_icon
 
 # Configure application
 app = Flask(__name__)
@@ -44,10 +45,10 @@ def create_icon():
     (filename, bg_colour, fg_colour, icon_type) = get_icon_and_form_data()
     print(f'filename: {filename}, fg_colour: {fg_colour}, bg_colour: {bg_colour}, icon_type: {icon_type}')
 
-    # Call function to create icon
-    # themed_icon_filename = create_icon_from_image(filename, bg_colour, fg_colour, icon_type)
-    themed_icon_filename = filename
     folder_path = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    (soft_edges_mask, harsh_edges_mask) = detect_edges(folder_path, filename)
+    themed_icon_filename = theme_icon(folder_path, filename, bg_colour, fg_colour, icon_type, soft_edges_mask, harsh_edges_mask)
+
     return send_from_directory(folder_path, themed_icon_filename, as_attachment=True)
 
 def create_icon_from_image(filename, bg_colour, fg_colour, icon_type):
@@ -71,8 +72,6 @@ def get_icon_and_form_data():
     bg_colour = request.form['bg_colour']
     fg_colour = request.form['fg_colour']
     icon_type = request.form['icon_type']
-    if icon_type == 'bg-only':
-        fg_colour = None
         
     return (filename, bg_colour, fg_colour, icon_type)
 
