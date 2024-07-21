@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from edge_detection import detect_edges
+
 # Configure application
 app = Flask(__name__)
 
@@ -48,6 +50,9 @@ def create_icon():
     folder_path = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     return send_from_directory(folder_path, themed_icon_filename, as_attachment=True)
 
+def create_icon_from_image(filename, bg_colour, fg_colour, icon_type):
+    # Call function to create icon
+    return filename
 
 def get_icon_and_form_data():
     icon = request.files["file_input"]
@@ -66,6 +71,9 @@ def get_icon_and_form_data():
     bg_colour = request.form['bg_colour']
     fg_colour = request.form['fg_colour']
     icon_type = request.form['icon_type']
+    if icon_type == 'bg-only':
+        fg_colour = None
+        
     return (filename, bg_colour, fg_colour, icon_type)
 
 def allowed_file(filename):
